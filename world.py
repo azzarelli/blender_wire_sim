@@ -75,8 +75,8 @@ class World():
         if objects != []:
             self.load_scene_as_world(objects)
     
-    def get_coordinates(self, OBJS):
-        """Get the coordinates associated with the input wire ()
+    def update_path_z_axis(self, OBJS):
+        """Update the z-axis of the given path object
         
         Inputs:
             OBJS : List of bpy.data.objects
@@ -85,6 +85,8 @@ class World():
         """
         if self.wire != '':
             print(self.p_verts)
+            for p in self.p_verts:
+                p.co.z = self.z 
 
 
 
