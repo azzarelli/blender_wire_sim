@@ -3,6 +3,9 @@
         - Also includes checking inputs
 """
 import bpy
+import bmesh
+from mathutils import Vector, Matrix
+
 
 
 def validate(flag:str='', params:tuple=(0, 'NA')):
@@ -43,10 +46,11 @@ class World():
                 self.room = o
                 self.room_data = o.data
                 self.r_faces = list(self.room_data.polygons)
-            
-            if o.name == 'wire_path':
-                self.wire = o
-                self.p_verts = list(o.data.vertices)
+
+            if o.name == "wire_path":
+                print('Wire')
+                self.wire = bpy.data.objects["wire_path"]
+                self.w_mat_world = self.wire.matrix_world
 
 
     def __init__(self, coords:list=[[.0,.0], [.1, .1]], arches:list=[], objects:list=[]):
@@ -74,8 +78,9 @@ class World():
 
         if objects != []:
             self.load_scene_as_world(objects)
+            print(self.wire)
     
-    def update_path_z_axis(self, OBJS):
+    def update_path_z_axis(self):
         """Update the z-axis of the given path object
         
         Inputs:
@@ -84,9 +89,27 @@ class World():
 
         """
         if self.wire != '':
-            print(self.p_verts)
-            for p in self.p_verts:
-                p.co.z = self.z 
+            for p in self.wire.data.vertices:
+                pos_world = self.w_mat_world @ p.co
+                pos_world.z = self.z
+                p.co = self.w_mat_world.inverted() @ pos_world
+    
+      
+    def add_vert(self):
+        bm = bmesh.new()
+        me = self.wire.data
+        bm.from_mesh(me)
+
+        bmesh.ops.subdivide_edges(bm,
+        edges=bm.edges, 
+        cuts=1, 
+        use_grid_fill=True,    
+        )
+
+        bm.to_mesh(me)
+        me.update()
+
+
 
 
 

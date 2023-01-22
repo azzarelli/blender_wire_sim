@@ -1,22 +1,25 @@
 import bpy
-# import sys
+import sys
 
     
-# # set the PYDEV_SOURCE_DIR correctly before using the debugger
-# DIRSRC = "C:/Users/azzad/Documents/Blender Projects/virtual_studio/"
-# # test if PYDEV_SOURCE_DIR already in sys.path, otherwise append it
-# if sys.path.count(DIRSRC) < 1:
-#     sys.path.append(DIRSRC)
+# set the PYDEV_SOURCE_DIR correctly before using the debugger
+DIRSRC = "C:/Users/azzad/Documents/Blender Projects/virtual_studio/blender_wire_sim/"
+# test if PYDEV_SOURCE_DIR already in sys.path, otherwise append it
+if sys.path.count(DIRSRC) < 1:
+    sys.path.append(DIRSRC)
 
-# import pydevd module
 import world as wrld
+import imp
+imp.reload(wrld)
 
-def run():
+if __name__ == "__main__":
+    print('------ Test 1 ------')
     OBJS = list(bpy.data.objects)
     
     world = wrld.World(objects=OBJS)#
     
     # Define the height of this fl
     world.get_floor_height()
-    
+#    world.update_path_z_axis() # floor wire
+    world.add_vert()
     print('zMin: ', world.z) 
