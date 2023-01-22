@@ -5,7 +5,7 @@
 import bpy
 import bmesh
 from mathutils import Vector, Matrix
-
+from wire import Wire
 
 
 def validate(flag:str='', params:tuple=(0, 'NA')):
@@ -49,8 +49,8 @@ class World():
 
             if o.name == "wire_path":
                 print('Wire')
-                self.wire = bpy.data.objects["wire_path"]
-                self.w_mat_world = self.wire.matrix_world
+                self.wire = Wire(bpy.data.objects["wire_path"])
+                self.w_mat_world = self.wire.mw
 
 
     def __init__(self, coords:list=[[.0,.0], [.1, .1]], arches:list=[], objects:list=[]):
@@ -90,9 +90,9 @@ class World():
         """
         if self.wire != '':
             for p in self.wire.data.vertices:
-                pos_world = self.w_mat_world @ p.co
+                pos_world = self.wire.mw @ p.co
                 pos_world.z = self.z
-                p.co = self.w_mat_world.inverted() @ pos_world
+                p.co = self.wire.mw.inverted() @ pos_world
 
 
     def populate_path(self, target:int=0):
@@ -118,7 +118,8 @@ class World():
                 print('Error : Population scaling is less than 1')
 
     def f_linear_combination(self, coords:list=[]):
-        
+        x1 = coords[0]
+
 
     def get_floor_height(self):
         """Determines the floor height for placing wires on floor
