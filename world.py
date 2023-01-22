@@ -93,28 +93,32 @@ class World():
                 pos_world = self.w_mat_world @ p.co
                 pos_world.z = self.z
                 p.co = self.w_mat_world.inverted() @ pos_world
-    
-      
-    def populate_path(self, target:=0):
+
+
+    def populate_path(self, target:int=0):
         if target > 0:
             n_verts = len(self.wire.data.vertices) -2 # get number of edges
-            
-            bm = bmesh.new()
-            me = self.wire.data
-            bm.from_mesh(me)
+            n_edges = n_verts + 1
+            mul = int((target-n_verts)/n_edges )
 
-            bmesh.ops.subdivide_edges(bm,
-            edges=bm.edges, 
-            cuts=1, 
-            use_grid_fill=True,    
-            )
+            if mul > 1:
+                bm = bmesh.new()
+                me = self.wire.data
+                bm.from_mesh(me)
 
-            bm.to_mesh(me)
-            me.update()
+                bmesh.ops.subdivide_edges(bm,
+                edges=bm.edges, 
+                cuts=mul, 
+                use_grid_fill=True,    
+                )
 
+                bm.to_mesh(me)
+                me.update()
+            else:
+                print('Error : Population scaling is less than 1')
 
-
-
+    def f_linear_combination(self, coords:list=[]):
+        
 
     def get_floor_height(self):
         """Determines the floor height for placing wires on floor
