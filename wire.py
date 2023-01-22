@@ -2,7 +2,11 @@ import bpy
 import bmesh
 import math
 import random
+import numpy as np
 
+def func(self, x, A=.1, f=1):
+        return A*math.sin(2* math.pi * f * x)
+        
 class Wire:
     def define_nodes(self, verts):
         verts_ = list(verts)
@@ -70,8 +74,6 @@ class Wire:
                         self.edge_map[k]['var'][f'{idx}'] = ''
        
 
-        print(self.edge_map)
-
     def update_pos(self):
         keys = self.edge_map.keys()
 
@@ -118,35 +120,40 @@ class Wire:
             xB = [pos1.x, pos1.y]
 
             for k in K:
-                print(k)
                 t = self.mw @ self.data.vertices[int(k)].co
                 
-                print(f'{t}, {xA}, {xB}')
                 self.edge_map[key]['var'][k] = self.f_transform(t, xA, xB)
 
         self.update_pos()
 
+    
 
     def f_transform(self, t, xA, xB):
-        
-        if (xB[0] - xA[0]) == 0:
-            m = float(xB[1] - xA[1])
+        if (xB[0] - xA[0]) ==0:
+            m = math.inf
+            m2 = 1
         else:
-            m = float(xB[1] - xA[1])/float(xB[0] - xA[0])
+            m = (xB[1] - xA[1])/(xB[0] - xA[0])
+            m2 = ((m*m) / (1+ (m*m)))
+
+        dAT = math.dist(xA, [t.x, t.y])
+        dAB = math.dist(xA, xB)
+        dt = dAT/dAB
+
+        h = func(dt)
         
-        th = math.atan(m)
-        c = math.cos(th)
-        s = math.sin(th)
-        A = .02
-        K = (xB[0]-xA[0])/c
+        if h >= 0:
+            iner = h*m2
+            dx = math.sqrt(iner)
+            dy = (-1/m)*math.sqrt(iner)
+        else:
+            iner = (-h)*m2
 
+            dx = -math.sqrt(iner)
+            dy = -(-1/m)*math.sqrt(iner)
 
-        # X = K*((c * t.x) - (s * math.sin(2*math.pi*t.x))) + xA[0]
-        
-        # Y = K*((s * t.y)+ (A * c * math.sin(2* math.pi * t.y))) + xA[1]
-
-        X = t.x + random.random()/10
-        Y = t.y + random.random()/10
+        X =  t.x + dx
+        Y = t.y + dy
         return [X, Y]
         
 
