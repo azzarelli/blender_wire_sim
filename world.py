@@ -119,6 +119,7 @@ class World():
                 bm.to_mesh(me)
                 me.update()
 
+                self.wire.edge_map_update()
                 # Place new vertices
                 self.wire.uniform_transform(mul)
             else:
