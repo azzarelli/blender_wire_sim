@@ -95,19 +95,22 @@ class World():
                 p.co = self.w_mat_world.inverted() @ pos_world
     
       
-    def add_vert(self):
-        bm = bmesh.new()
-        me = self.wire.data
-        bm.from_mesh(me)
+    def populate_path(self, target:=0):
+        if target > 0:
+            n_verts = len(self.wire.data.vertices) -2 # get number of edges
+            
+            bm = bmesh.new()
+            me = self.wire.data
+            bm.from_mesh(me)
 
-        bmesh.ops.subdivide_edges(bm,
-        edges=bm.edges, 
-        cuts=1, 
-        use_grid_fill=True,    
-        )
+            bmesh.ops.subdivide_edges(bm,
+            edges=bm.edges, 
+            cuts=1, 
+            use_grid_fill=True,    
+            )
 
-        bm.to_mesh(me)
-        me.update()
+            bm.to_mesh(me)
+            me.update()
 
 
 
