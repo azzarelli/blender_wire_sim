@@ -21,5 +21,6 @@ if __name__ == "__main__":
     # Define the height of this fl
     world.get_floor_height()
 #    world.update_path_z_axis() # floor wire
-    world.populate_path(10)
+#    world.populate_path(10)
+    world.populate_path(15)
     print('zMin: ', world.z) 

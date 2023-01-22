@@ -5,7 +5,9 @@
 import bpy
 import bmesh
 from mathutils import Vector, Matrix
-from wire import Wire
+import wire
+import imp
+imp.reload(wire)
 
 
 def validate(flag:str='', params:tuple=(0, 'NA')):
@@ -49,7 +51,7 @@ class World():
 
             if o.name == "wire_path":
                 print('Wire')
-                self.wire = Wire(bpy.data.objects["wire_path"])
+                self.wire = wire.Wire(bpy.data.objects["wire_path"])
                 self.w_mat_world = self.wire.mw
 
 
@@ -100,6 +102,8 @@ class World():
             n_verts = len(self.wire.data.vertices) -2 # get number of edges
             n_edges = n_verts + 1
             mul = int((target-n_verts)/n_edges )
+            mul=20
+
 
             if mul > 1:
                 bm = bmesh.new()
@@ -114,6 +118,9 @@ class World():
 
                 bm.to_mesh(me)
                 me.update()
+
+                # Place new vertices
+                self.wire.uniform_transform(mul)
             else:
                 print('Error : Population scaling is less than 1')
 
