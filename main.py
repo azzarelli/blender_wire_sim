@@ -23,4 +23,3 @@ if __name__ == "__main__":
 #    world.update_path_z_axis() # floor wire
 #    world.populate_path(10)
     world.populate_path(15)
-    print('zMin: ', world.z) 
