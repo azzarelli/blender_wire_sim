@@ -9,34 +9,6 @@ import wire
 import imp
 imp.reload(wire)
 
-
-def validate(flag:str='', params:tuple=(0, 'NA')):
-    val = 0
-    if params != (0, "NA"):
-        # Validate Inputs for initialisation of class
-        if flag == "initialisation":
-            co, arch = params
-            if len(co) != 2: # coords must be a list of two
-                val = 1
-                print(f"Error : Input Coordinates for World should only contain start and end coordinates.")
-            else:
-                if (len(co[0]) != 2) or (len(co[1]) != 2): # each coord must be 2D
-                    val = 1
-                    print(f"Error : Coordinates should be 2D (along x and y axis).")
-                elif (type(co[0][0]) != type(.1)) or (type(co[1][0]) != type(.1)):
-                    val = 1
-                    print(f"Error : Start/End cordinates are not of type float.")
-                else:
-                    if len(arch) > 0: # if arch coords exist we need to validate them
-                        for p in arch:
-                            if len(p) != 2: # if arch coords are lenth 2
-                                val = 1
-                                print(f"Error : Arch Param {p} is not 2D (along x and y axis).")
-                            elif type(p[0]) != type(0.1): # check if list is a float list
-                                val = 1
-                                print(f"Error : Arch Param {p} must be float types.")
-
-
 class World():
     def load_scene_as_world(self, OBJS):
         """Loading in Scene parameters to match World simulation
