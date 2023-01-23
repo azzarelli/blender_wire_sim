@@ -11,7 +11,11 @@ imp.reload(properties)
 
 class World:
     props = {"Int Wire Num":properties.WireProperties}
-    oprs = {'opr.gen_wire_operator':operator.GenWireOperator, 'opr.del_wire_operator':operator.DelWireObjectOperator}
+    oprs = {
+            'opr.gen_wire_operator':operator.GenWireOperator, 
+            'opr.del_wire_operator':operator.DelWireObjectOperator, 
+            'opr.load_result_operator':operator.LoadResultOperator
+            }
     cls = {"VIEW3D_PT_Wire_Gen_Pan":panel.Panel}
 
     def register(self, o, c):
@@ -22,16 +26,13 @@ class World:
         else:
             bpy.utils.register_class(c)
     
-
     def unregister(self, o, c):
         if o == "Int Wire Num":
             bpy.utils.unregister_class(c)
             del bpy.types.Scene.wire_tool
         else:
             bpy.utils.unregister_class(c)
-        
 
-        return 200
 
     def load(self, f:int=0):
         pk = self.props.keys()
