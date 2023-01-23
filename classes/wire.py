@@ -9,9 +9,10 @@ class Wire:
     faces = []  
 
     def __init__(self) -> None:
-        self.vert_map = {"end":{ "0":self.verts[0], "1":self.verts[1]},
+        self.vert_map = {"edge":{ "0":self.verts[0], "1":self.verts[1]},
                         "arch":{}}
         self.edge_map = {"fixed":{f"{self.edges[0][0]}_{self.edges[0][1]}":["", ""]}}
+
 
     def init_generation(self, OBJS) -> str:
         """Generate an initial wire-frame at the center of the world
@@ -30,6 +31,7 @@ class Wire:
 
         return f'Object-mesh {self.name} created'
 
+
     def delete_object(self, OBJS) -> str:
         """Delete the wire-frame object
         """
@@ -39,15 +41,20 @@ class Wire:
                 return f'Deleted Object : {self.name}'
         return f'No Object Deleted (Doesn t exist)'
 
-    def update_ends(self, a, b):
-        self.vert_map["end"]["0"] = a
-        self.vert_map["end"]["1"] = b
 
-    def load_result(self):
+    def load_result(self, props, scene):
         """Update the new placement of our mesh and Generate a new cable
         """
+        # Determine if object exists
+        found = 0
+        for o in scene.objects:
+            if o.name == self.name:
+                found = 1
+        
+        if found == 0:
+            return f'No Object Found'
 
-        print('Loading Result')
+        # Get the vertices and edges of the new mesh
 
         return f'Nothing Loaded ya dumbass'
 
