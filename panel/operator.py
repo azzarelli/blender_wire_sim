@@ -15,13 +15,10 @@ class GenWireOperator(bpy.types.Operator):
     def execute(self, context):
         scene = context.scene
 
-        wiretool = scene.wire_tool
+       
 
         msg = VARS.wire.init_generation(scene.objects)
-
         print(msg)
-
-        print(f"Wire tool : {wiretool.wire_num}")
 
         return {'FINISHED'}
 
@@ -41,7 +38,9 @@ class LoadResultOperator(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        msg = VARS.wire.load_result(scene.objects)
+
+        props = scene.wire_tool
+        msg = VARS.wire.load_result(props, scene)
 
         print(msg)
 
