@@ -14,8 +14,14 @@ class Panel(bpy.types.Panel):
 
         col.operator('opr.gen_wire_operator', text='Generate Arch Map')
         col.operator('opr.del_wire_operator', text='Delete Cable')
-
-
+        
         col.prop(wire_tool, "wire_num")
+        col.prop(wire_tool, "arch_slack")
+        col.prop(wire_tool, "wire_slack")
+
+
+        col.operator('opr.load_result_operator', text='Load Cable')
+
+        
 
         
